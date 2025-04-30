@@ -1,0 +1,15 @@
+{
+    "name": "bycarmona141/king-ban",
+    "description": "Banning package",
+    "autoload": {
+        "psr-4": {
+            "Bycarmona141\\KingBan\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ByCarmona141"
+        }
+    ],
+    "require": {}
+}
