@@ -5,8 +5,8 @@ namespace ByCarmona141\KingBan;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 
-use ByCarmona141\KingBan\Console\Commands\KingBanCommand;
 use Illuminate\Support\Facades\Route;
+use ByCarmona141\KingBan\Console\Commands\KingBanCommand;
 
 
 
@@ -17,7 +17,7 @@ class KingBanServiceProvider extends ServiceProvider {
         });
 
         // Carga de configuracion
-        $this->mergeConfigFrom($this->basePath('config/king-ban.php'), 'king-ban');
+        //$this->mergeConfigFrom($this->basePath('config/king-ban.php'), 'king-ban');
     }
 
     public function boot() {
@@ -25,9 +25,11 @@ class KingBanServiceProvider extends ServiceProvider {
         $this->loadRoutesFrom($this->basePath('routes/web.php'));
 
         // Registro de migraciones
+        /*
         $this->loadMigrationsFrom(
             $this->basePath('database/migrations')
         );
+        */
 
         // Publicar rutas
         $this->publishes(
@@ -36,10 +38,12 @@ class KingBanServiceProvider extends ServiceProvider {
         );
 
         // Publicar configuracion
+        /*
         $this->publishes(
             [$this->basePath('config/king-ban.php') => config_path('king-ban.php')],
             'king-ban-config'
         );
+        */
     }
 
     protected function basePath($path = '') {
