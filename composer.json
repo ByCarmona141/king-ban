@@ -6,10 +6,27 @@
             "Bycarmona141\\KingBan\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Bycarmona141\\KingBan\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "ByCarmona141"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "orchestra/testbench": "^10.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ByCarmona141\\KingBan\\KingBanServiceProvider"
+            ],
+            "aliases": {
+                "KingBan": "ByCarmona141\\KingBan\\Facades\\KingBan"
+            }
+        }
+    }
 }
