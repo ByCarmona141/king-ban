@@ -1,1 +1,11 @@
 <?php
+
+return [
+    'users' => [
+
+    ],
+
+    'tokens' => [
+
+    ],
+];
