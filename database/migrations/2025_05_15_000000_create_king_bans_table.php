@@ -16,11 +16,11 @@ return new class extends Migration {
             $table->bigInteger('king_user_id')->nullable()->comment('Usuario que realizo la accion');
             $table->text('endpoint')->comment('Endpoint de la accion realizada');
             $table->text('token')->nullable()->comment('token de la accion');
-            $table->string('ip', 255)->comment('ip de la accion');
+            $table->string('ip', 15)->comment('ip de la accion');
             $table->string('reason')->nullable()->comment('Razon por la cual fue baneado');
             $table->timestamp('banned_at')->useCurrent()->comment('Fecha del baneo');
             $table->timestamp('expired_at')->nullable()->comment('Tiempo que expira el baneo'); // null = permanente
-            $table->boolean('active')->default(true)->comment('Usuario que realizo la accion');
+            $table->boolean('active')->default(true)->comment('Indica si el baneo está activo');
             $table->timestamps();
         });
 

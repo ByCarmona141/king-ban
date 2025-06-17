@@ -32,17 +32,18 @@ class KingBan extends Model {
     protected $casts = [
         'id' => 'integer',
         'king_user_id' => 'integer',
+        'banned_at' => 'datetime',
+        'expired_at' => 'datetime',
+        'active' => 'boolean',
     ];
 
-    public function banUser($kingUserId) {
-
+    // Helper: verificar si el baneo ha expirado
+    public function isExpired(): bool {
+        return $this->expired_at && now()->greaterThan($this->expired_at);
     }
 
-    public function banIP($kingUserId) {
-
-    }
-
-    public function banToken($kingUserId) {
-
+    // Helper: verificar si el baneo está activo
+    public function isActive(): bool {
+        return $this->active && !$this->isExpired();
     }
 }
