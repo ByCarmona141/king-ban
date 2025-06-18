@@ -6,7 +6,7 @@ use ByCarmona141\KingBan\Models\KingBan as KingBanModel;
 
 class KingBan {
     /****************************************************************** BANEOS ******************************************************************/
-    public function banUser($kingUserId, $reason = NULL, $endpoint = NULL, $token = NULL, $ip = NULL) {
+    public function banUser(int $kingUserId, string $reason = NULL, string $endpoint = NULL, string $token = NULL, string $ip = NULL) {
         return KingBanModel::create([
             'type' => 'user',
             'king_user_id' => $kingUserId,
@@ -20,7 +20,7 @@ class KingBan {
         ]);
     }
 
-    public function banIP($ip, $reason = NULL, $kingUserId = NULL, $endpoint = NULL, $token = NULL) {
+    public function banIP(string $ip, string $reason = NULL, int $kingUserId = NULL, string $endpoint = NULL, string $token = NULL) {
         return KingBanModel::create([
             'type' => 'ip',
             'king_user_id' => ($kingUserId === NULL) ? NULL : $kingUserId,
@@ -34,7 +34,7 @@ class KingBan {
         ]);
     }
 
-    public function banToken($token, $reason = NULL, $kingUserId = NULL, $endpoint = NULL, $ip = NULL) {
+    public function banToken(string $token, string $reason = NULL, int $kingUserId = NULL, string $endpoint = NULL, string $ip = NULL) {
         return KingBanModel::create([
             'type' => 'token',
             'king_user_id' => ($kingUserId === NULL) ? NULL : $kingUserId,
@@ -48,7 +48,7 @@ class KingBan {
         ]);
     }
 
-    public function permanentBanUser($kingUserId, $reason = NULL, $endpoint = NULL, $token = NULL, $ip = NULL) {
+    public function permanentBanUser(int $kingUserId, string $reason = NULL, string $endpoint = NULL, string $token = NULL, string $ip = NULL) {
         return KingBanModel::create([
             'type' => 'user',
             'king_user_id' => $kingUserId,
@@ -62,7 +62,7 @@ class KingBan {
         ]);
     }
 
-    public function permanentBanIP($ip, $reason = NULL, $kingUserId = NULL, $endpoint = NULL, $token = NULL) {
+    public function permanentBanIP(string $ip, string $reason = NULL, int $kingUserId = NULL, string $endpoint = NULL, string $token = NULL) {
         return KingBanModel::create([
             'type' => 'ip',
             'king_user_id' => ($kingUserId === NULL) ? NULL : $kingUserId,
@@ -76,7 +76,7 @@ class KingBan {
         ]);
     }
 
-    public function permanentBanToken($token, $reason = NULL, $kingUserId = NULL, $endpoint = NULL, $ip = NULL) {
+    public function permanentBanToken(string $token, string $reason = NULL, int $kingUserId = NULL, string $endpoint = NULL, string $ip = NULL) {
         return KingBanModel::create([
             'type' => 'token',
             'king_user_id' => ($kingUserId === NULL) ? NULL : $kingUserId,
@@ -92,21 +92,21 @@ class KingBan {
 
     /****************************************************************** DESBANEOS ******************************************************************/
 
-    public function unbanUser($kingUserId) {
+    public function unbanUser(int $kingUserId) {
         return KingBanModel::where('type', 'user')
             ->where('king_user_id', $kingUserId)
             ->where('active', true)
             ->update(['active' => false]);
     }
 
-    public function unbanIP($ip) {
+    public function unbanIP(string $ip) {
         return KingBanModel::where('type', 'ip')
             ->where('ip', $ip)
             ->where('active', true)
             ->update(['active' => false]);
     }
 
-    public function unbanToken($token) {
+    public function unbanToken(string $token) {
         return KingBanModel::where('type', 'token')
             ->where('token', $token)
             ->where('active', true)
@@ -114,7 +114,7 @@ class KingBan {
     }
 
     /****************************************************************** HELPERS ******************************************************************/
-    public function isUserBanned($kingUserId): bool {
+    public function isUserBanned(int $kingUserId): bool {
         return KingBanModel::where('type', 'user')
             ->where('king_user_id', $kingUserId)
             ->where('active', true)
@@ -124,7 +124,7 @@ class KingBan {
             ->exists();
     }
 
-    public function isIPBanned($ip): bool {
+    public function isIPBanned(string $ip): bool {
         return KingBanModel::where('type', 'ip')
             ->where('ip', $ip)
             ->where('active', true)
@@ -134,7 +134,7 @@ class KingBan {
             ->exists();
     }
 
-    public function isTokenBanned($token): bool {
+    public function isTokenBanned(string $token): bool {
         return KingBanModel::where('type', 'token')
             ->where('token', $token)
             ->where('active', true)
@@ -144,15 +144,39 @@ class KingBan {
             ->exists();
     }
 
-    public function isUserNotBanned($kingUserId): bool {
+    public function isBanned(string $type, string|int $value): bool {
+        return KingBanModel::where('type', $type)
+            ->where(function ($q) use ($type, $value) {
+                if ($type === 'ip') {
+                    $q->where('ip', $value);
+                } elseif ($type === 'token') {
+                    $q->where('token', $value);
+                } elseif ($type === 'user') {
+                    $q->where('king_user_id', $value);
+                }
+            })
+            ->where('active', true)
+            ->where(function ($q) {
+                $q->whereNull('expired_at')->orWhere('expired_at', '>', now());
+            })
+            ->exists();
+    }
+
+    public function isUserNotBanned(int $kingUserId): bool {
         return !$this->isUserBanned($kingUserId);
     }
 
-    public function isIpNotBanned($ip): bool {
+    public function isIpNotBanned(string $ip): bool {
         return !$this->isIpBanned($ip);
     }
 
-    public function isTokenNotBanned($token): bool {
+    public function isTokenNotBanned(string $token): bool {
         return !$this->isTokenBanned($token);
     }
+
+    public function isNotBanned(string $type, string|int $value): bool {
+        return !$this->isBanned($type, $value);
+    }
+
+    /****************************************************************** ESTADISTICAS ******************************************************************/
 }
