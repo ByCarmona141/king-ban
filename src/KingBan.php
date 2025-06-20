@@ -21,9 +21,17 @@ class KingBan {
     }
 
     public function banIP(string $ip, string $reason = NULL, int $kingUserId = NULL, string $endpoint = NULL, string $token = NULL) {
+        if($kingUserId === NULL) {
+            if(auth()->user() === NULL) {
+                $kingUserId = NULL;
+            } else {
+                $kingUserId = auth()->user()->id;
+            }
+        }
+
         return KingBanModel::create([
             'type' => 'ip',
-            'king_user_id' => ($kingUserId === NULL) ? NULL : $kingUserId,
+            'king_user_id' => $kingUserId,
             'endpoint' => ($endpoint === NULL) ? request()->path() : $endpoint,
             'token' => ($token === NULL) ? request()->bearerToken() : $token,
             'ip' => $ip,
@@ -35,9 +43,17 @@ class KingBan {
     }
 
     public function banToken(string $token, string $reason = NULL, int $kingUserId = NULL, string $endpoint = NULL, string $ip = NULL) {
+        if($kingUserId === NULL) {
+            if(auth()->user() === NULL) {
+                $kingUserId = NULL;
+            } else {
+                $kingUserId = auth()->user()->id;
+            }
+        }
+
         return KingBanModel::create([
             'type' => 'token',
-            'king_user_id' => ($kingUserId === NULL) ? NULL : $kingUserId,
+            'king_user_id' => $kingUserId,
             'endpoint' => ($endpoint === NULL) ? request()->path() : $endpoint,
             'token' => $token,
             'ip' => ($ip === NULL) ? request()->ip() : $ip,
@@ -63,9 +79,17 @@ class KingBan {
     }
 
     public function permanentBanIP(string $ip, string $reason = NULL, int $kingUserId = NULL, string $endpoint = NULL, string $token = NULL) {
+        if($kingUserId === NULL) {
+            if(auth()->user() === NULL) {
+                $kingUserId = NULL;
+            } else {
+                $kingUserId = auth()->user()->id;
+            }
+        }
+
         return KingBanModel::create([
             'type' => 'ip',
-            'king_user_id' => ($kingUserId === NULL) ? NULL : $kingUserId,
+            'king_user_id' => $kingUserId,
             'endpoint' => ($endpoint === NULL) ? request()->path() : $endpoint,
             'token' => ($token === NULL) ? request()->bearerToken() : $token,
             'ip' => $ip,
@@ -77,9 +101,17 @@ class KingBan {
     }
 
     public function permanentBanToken(string $token, string $reason = NULL, int $kingUserId = NULL, string $endpoint = NULL, string $ip = NULL) {
+        if($kingUserId === NULL) {
+            if(auth()->user() === NULL) {
+                $kingUserId = NULL;
+            } else {
+                $kingUserId = auth()->user()->id;
+            }
+        }
+
         return KingBanModel::create([
             'type' => 'token',
-            'king_user_id' => ($kingUserId === NULL) ? NULL : $kingUserId,
+            'king_user_id' => $kingUserId,
             'endpoint' => ($endpoint === NULL) ? request()->path() : $endpoint,
             'token' => $token,
             'ip' => ($ip === NULL) ? request()->ip() : $ip,
