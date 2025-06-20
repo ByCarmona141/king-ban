@@ -6,6 +6,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Support\Facades\Route;
+use Bycarmona141\KingBan\Middleware\AuthBanned;
 use ByCarmona141\KingBan\Console\Commands\KingBanCommand;
 
 
@@ -40,6 +41,9 @@ class KingBanServiceProvider extends ServiceProvider {
             [$this->basePath('config/king-ban.php') => config_path('king-ban.php')],
             'king-ban-config'
         );
+
+        // Publicar Middleware
+        $this->app->make(Kernel::class)->pushMiddleware(AuthBanned::class);
     }
 
     protected function basePath($path = '') {
